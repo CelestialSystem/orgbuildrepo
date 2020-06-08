@@ -1,0 +1,28 @@
+language: ruby
+dist: bionic
+
+rvm: 2.6.6
+
+services:
+  - redis
+
+addons:
+  snaps:
+  - name: docker
+    channel: latest/beta
+
+env:
+  global:
+    - PATH=/snap/bin:$PATH
+
+cache: bundler
+
+bundler_args: --without development --jobs 3 --retry 3 --deployment
+
+before_install: gem install bundler
+
+jobs:
+  include:
+    - stage: "rspec"
+      script: bundle exec rspec spec
+
